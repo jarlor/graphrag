@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "graphrag"
 # Maintainers: do not change the version here manually, use ./scripts/release.sh
-version = "0.2.0"
+version = "0.2.2"
 description = ""
 authors = [
     "Alonso Guevara Fernández <alonsog@microsoft.com>",
@@ -47,7 +47,7 @@ datashaper = "^0.0.49"
 
 # Vector Stores
 azure-search-documents = "^11.4.0"
-lancedb = "^0.10.0"
+lancedb = "^0.11.0"
 
 # Event Loops
 uvloop = { version = "^0.19.0", markers = "platform_system != 'Windows'" }
@@ -82,7 +82,7 @@ tenacity = "^8.5.0"
 swifter = "^1.4.0"
 pydantic = "^2"
 rich = "^13.6.0"
-textual = "^0.72.0"
+textual = "^0.74.0"
 devtools = "^0.12.2"
 
 typing-extensions = "^4.12.2"
@@ -90,18 +90,19 @@ typing-extensions = "^4.12.2"
 #Azure
 azure-storage-blob = "^12.19.0"
 azure-identity = "^1.17.1"
+json-repair = "^0.26.0"
 
 streamlit = "^1.37.0"
 loguru = "^0.7.2"
 rank-bm25 = "^0.2.2"
 jieba = "^0.42.1"
-langchain = "^0.2.12"
+langchain = ">=0.2.12"
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.0"
 ipykernel = "^6.29.4"
 jupyter = "^1.0.0"
 nbconvert = "^7.16.3"
-poethepoet = "^0.26.0"
+poethepoet = "^0.27.0"
 pyright = "^1.1.371"
 pytest = "^8.3.2"
 pytest-asyncio = "^0.23.4"
@@ -130,7 +131,7 @@ _convert_local_search_nb = 'jupyter nbconvert --output-dir=docsite/posts/query/n
 _convert_global_search_nb = 'jupyter nbconvert --output-dir=docsite/posts/query/notebooks/ --output="{notebook_name}_nb" --template=docsite/nbdocsite_template --to markdown examples_notebooks/global_search.ipynb'
 _semversioner_release = "semversioner release"
 _semversioner_changelog = "semversioner changelog > CHANGELOG.md"
-_semversioner_update_toml_version = "update-toml update --path tool.poetry.version --value \"$(semversioner current-version)\" pyproject.toml"
+_semversioner_update_toml_version = "update-toml update --path tool.poetry.version --value $(semversioner current-version)"
 coverage_report = 'coverage report --omit "**/tests/**" --show-missing'
 check_format = 'ruff format . --check --preview'
 fix = "ruff  --preview check --fix ."
@@ -233,6 +234,8 @@ select = [
     # ANN # Type annotations, re-enable when we get bandwidth
 ]
 ignore = [
+    # Ignore module names shadowing Python builtins
+    "A005",
     # Deprecated Rules
     "ANN101",
     "ANN102",
@@ -243,7 +246,7 @@ ignore = [
     "PD002", # prevents inplace=True
     # TODO RE-Enable when we get bandwidth
     "PERF203", # Needs restructuring of errors, we should bail-out on first error
-    "C901", # needs refactoring to remove cyclomatic complexity
+    "C901",    # needs refactoring to remove cyclomatic complexity
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -265,6 +268,6 @@ exclude = ["**/node_modules", "**/__pycache__"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-timeout = 600
+timeout = 800
 # log_cli = true
 # log_cli_level = "INFO"

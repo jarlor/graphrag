@@ -52,6 +52,7 @@ def load_data_files(data_dir, config: FinalConfig):
     )
     vector_store_type = vector_store_args.get("type", VectorStoreType.LanceDB)
     description_embedding_store = __get_embedding_description_store(
+        entities=entities,
         vector_store_type=vector_store_type,
         config_args=vector_store_args,
     )
@@ -145,7 +146,7 @@ def load_domain_setting(domain_dir) -> Tuple[str, FinalConfig]:
         Dict: config
     """
     # load setting from domain dir
-    data_dir, _, config = _configure_paths_and_settings(None, domain_dir)
+    data_dir, _, config = _configure_paths_and_settings(None, domain_dir,None)
 
     # todo:load setting from global setting
     # get current file path
